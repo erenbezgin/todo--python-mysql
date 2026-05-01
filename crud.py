@@ -24,6 +24,30 @@ def add_task(task_name):
             conn.close()
 
 
+def update_task_status(task_id, new_status="Completed"):
+    conn, cursor = connect_db()
+
+    if conn and cursor:
+        try:
+            # ıd ile görev güncelleme
+            sql = "UPDATE tasks SET status = %s WHERE id = %s"
+            val = (new_status, task_id)
+
+            cursor.execute(sql, val)
+            conn.commit()
+
+            if cursor.rowcount > 0:
+                print(f"ID {task_id} olan görev '{new_status}' olarak güncellendi.")
+            else:
+                print("Hata: Bu ID'ye sahip bir görev bulunamadı.")
+
+        except Exception as err:
+            print(f"Güncelleme hatası: {err}")
+        finally:
+            cursor.close()
+            conn.close()
+
+
 def show_tasks():
     conn, cursor = connect_db()
 
@@ -50,6 +74,7 @@ def show_tasks():
 
 if __name__ == "__main__":
 
-    gorev = input("Yeni görev girin: ")
-    add_task(gorev)
+    show_tasks()
+    ıd = int(input("Güncellenecek görev ID'sini girin: "))
+    update_task_status(ıd)
     show_tasks()
