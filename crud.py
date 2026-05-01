@@ -48,6 +48,30 @@ def update_task_status(task_id, new_status="Completed"):
             conn.close()
 
 
+def delete_task(task_id):
+    conn, cursor = connect_db()
+
+    if conn and cursor:
+        try:
+            # ıd sahip görev sil
+            sql = "DELETE FROM tasks WHERE id = %s"
+            val = (task_id,)
+
+            cursor.execute(sql, val)
+            conn.commit()
+
+            if cursor.rowcount > 0:
+                print(f"ID {task_id} olan görev başarıyla silindi.")
+            else:
+                print("Hata: Silinmek istenen ID bulunamadı.")
+
+        except Exception as err:
+            print(f"Silme hatası: {err}")
+        finally:
+            cursor.close()
+            conn.close()
+
+
 def show_tasks():
     conn, cursor = connect_db()
 
@@ -74,7 +98,11 @@ def show_tasks():
 
 if __name__ == "__main__":
 
+    print("--- MEVCUT LİSTE ---")
     show_tasks()
-    ıd = int(input("Güncellenecek görev ID'sini girin: "))
-    update_task_status(ıd)
+
+    secim = input("Silmek istediğin ID'yi gir: ")
+    delete_task(secim)
+
+    print("--- GÜNCEL LİSTE ---")
     show_tasks()
