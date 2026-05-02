@@ -72,28 +72,15 @@ def delete_task(task_id):
             conn.close()
 
 
-def show_tasks():
+def get_tasks():  # İsmini değiştirdik çünkü artık print değil "get" (getir) yapacak
     conn, cursor = connect_db()
-
     if conn and cursor:
-        try:
-            # görevleri çek
-            cursor.execute("SELECT * FROM tasks")
-
-            # sonuçları al
-            results = cursor.fetchall()
-
-            print("\n--- TO DO ---")
-            for row in results:
-                # id ,görev adı, durum
-                print(f"ID: {row[0]} | Görev: {row[1]} | Durum: {row[2]}")
-            print("---------------------------\n")
-
-        except Exception as err:
-            print(f"Okuma hatası: {err}")
-        finally:
-            cursor.close()
-            conn.close()
+        cursor.execute("SELECT * FROM tasks")
+        results = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return results  # Verileri liste olarak döndürüyoruz
+    return []
 
 
 if __name__ == "__main__":
