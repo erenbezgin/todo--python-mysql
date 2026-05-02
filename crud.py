@@ -72,14 +72,14 @@ def delete_task(task_id):
             conn.close()
 
 
-def get_tasks():  # İsmini değiştirdik çünkü artık print değil "get" (getir) yapacak
+def get_tasks():
     conn, cursor = connect_db()
     if conn and cursor:
         cursor.execute("SELECT * FROM tasks")
         results = cursor.fetchall()
         cursor.close()
         conn.close()
-        return results  # Verileri liste olarak döndürüyoruz
+        return results
     return []
 
 
